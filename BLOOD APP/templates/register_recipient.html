@@ -1,0 +1,437 @@
+{% extends "base.html" %}
+
+{% block title %}Register as Recipient - BloodConnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-user-injured me-3"></i>
+                        Request Blood Donation
+                    </h2>
+                    <p class="mb-0 mt-2 opacity-75">Get connected with compatible blood donors in your area</p>
+                </div>
+                
+                <div class="card-body p-5">
+                    <form method="POST" id="recipient-form" novalidate>
+                        <div class="row">
+                            <!-- Patient Information -->
+                            <div class="col-12 mb-4">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-user me-2"></i>Patient Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label fw-semibold">
+                                    <i class="fas fa-user me-1"></i>Patient Name *
+                                </label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       placeholder="Enter patient's full name" required minlength="2">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="blood_type" class="form-label fw-semibold">
+                                    <i class="fas fa-tint me-1"></i>Required Blood Type *
+                                </label>
+                                <select class="form-select" id="blood_type" name="blood_type" required>
+                                    <option value="">Select required blood type</option>
+                                    {% for blood_type in blood_types %}
+                                        <option value="{{ blood_type }}">{{ blood_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <!-- Contact Information -->
+                            <div class="col-12 mb-4 mt-3">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-phone me-2"></i>Contact Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label fw-semibold">
+                                    <i class="fas fa-envelope me-1"></i>Email Address *
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="your.email@example.com" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label fw-semibold">
+                                    <i class="fas fa-lock me-1"></i>Password *
+                                </label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Create a secure password" required minlength="6">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Minimum 6 characters required
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label fw-semibold">
+                                    <i class="fas fa-phone me-1"></i>Phone Number *
+                                </label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       placeholder="+1 (555) 123-4567" required pattern="[+]?[0-9\s\-\(\)]{10,}">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    This number will be shared with potential donors
+                                </div>
+                            </div>
+                            
+                            <!-- Location & Hospital Information -->
+                            <div class="col-12 mb-4 mt-3">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-hospital me-2"></i>Location & Hospital Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label fw-semibold">
+                                    <i class="fas fa-city me-1"></i>City *
+                                </label>
+                                <input type="text" class="form-control" id="city" name="city" 
+                                       placeholder="Your city" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="hospital" class="form-label fw-semibold">
+                                    <i class="fas fa-hospital me-1"></i>Hospital Name *
+                                </label>
+                                <input type="text" class="form-control" id="hospital" name="hospital" 
+                                       placeholder="Hospital where blood is needed" required>
+                            </div>
+                            
+                            <!-- Urgency Level -->
+                            <div class="col-12 mb-4 mt-3">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>Urgency Level
+                                </h5>
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="fas fa-clock me-1"></i>How urgent is this request? *
+                                </label>
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="urgency" 
+                                                   id="urgency_low" value="Low" required>
+                                            <label class="form-check-label" for="urgency_low">
+                                                <span class="badge bg-success me-2">Low</span>
+                                                Within a week
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="urgency" 
+                                                   id="urgency_medium" value="Medium" required>
+                                            <label class="form-check-label" for="urgency_medium">
+                                                <span class="badge bg-warning me-2">Medium</span>
+                                                Within 2-3 days
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="urgency" 
+                                                   id="urgency_high" value="High" required>
+                                            <label class="form-check-label" for="urgency_high">
+                                                <span class="badge bg-danger me-2">High</span>
+                                                Within 24 hours
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Information -->
+                            <div class="col-12 mb-4 mt-3">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Additional Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <label for="medical_condition" class="form-label fw-semibold">
+                                    <i class="fas fa-notes-medical me-1"></i>Medical Condition/Reason
+                                </label>
+                                <textarea class="form-control" id="medical_condition" name="medical_condition" 
+                                          rows="3" placeholder="Brief description of medical condition or reason for blood requirement (optional)"></textarea>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="units_needed" class="form-label fw-semibold">
+                                    <i class="fas fa-vial me-1"></i>Units Needed
+                                </label>
+                                <select class="form-select" id="units_needed" name="units_needed">
+                                    <option value="">Select units needed</option>
+                                    <option value="1">1 Unit</option>
+                                    <option value="2">2 Units</option>
+                                    <option value="3">3 Units</option>
+                                    <option value="4">4 Units</option>
+                                    <option value="5+">5+ Units</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="preferred_time" class="form-label fw-semibold">
+                                    <i class="fas fa-clock me-1"></i>Preferred Contact Time
+                                </label>
+                                <select class="form-select" id="preferred_time" name="preferred_time">
+                                    <option value="">Any time</option>
+                                    <option value="morning">Morning (8 AM - 12 PM)</option>
+                                    <option value="afternoon">Afternoon (12 PM - 6 PM)</option>
+                                    <option value="evening">Evening (6 PM - 10 PM)</option>
+                                    <option value="emergency">Emergency - Any time</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Consent and Terms -->
+                            <div class="col-12 mt-4">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" class="text-danger">Terms and Conditions</a> 
+                                        and <a href="#" class="text-danger">Privacy Policy</a> *
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="contact_consent" required>
+                                    <label class="form-check-label" for="contact_consent">
+                                        I consent to my contact information being shared with potential donors *
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="medical_verification">
+                                    <label class="form-check-label" for="medical_verification">
+                                        I confirm that this request is medically verified and genuine
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-danger btn-lg px-5 py-3">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Submit Blood Request
+                                </button>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        We will connect you with compatible donors in your area
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Information Cards -->
+            <div class="row mt-5">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                            <h5>Smart Matching</h5>
+                            <p class="text-muted small">We find compatible donors based on blood type and location</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                            <h5>Quick Response</h5>
+                            <p class="text-muted small">Get responses from donors within hours of posting</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                            <h5>Verified Donors</h5>
+                            <p class="text-muted small">All donors are verified and screened for safety</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blood Compatibility Modal -->
+<div class="modal fade" id="compatibilityModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-tint me-2"></i>
+                    Blood Type Compatibility
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Recipient Blood Type</th>
+                                <th>Can Receive From</th>
+                                <th>Compatibility</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge bg-danger">A+</span></td>
+                                <td>A+, A-, O+, O-</td>
+                                <td><span class="text-success">Good compatibility</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">A-</span></td>
+                                <td>A-, O-</td>
+                                <td><span class="text-warning">Limited compatibility</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">B+</span></td>
+                                <td>B+, B-, O+, O-</td>
+                                <td><span class="text-success">Good compatibility</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">B-</span></td>
+                                <td>B-, O-</td>
+                                <td><span class="text-warning">Limited compatibility</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">AB+</span></td>
+                                <td>All blood types</td>
+                                <td><span class="text-success">Universal recipient</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">AB-</span></td>
+                                <td>A-, B-, AB-, O-</td>
+                                <td><span class="text-info">Moderate compatibility</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">O+</span></td>
+                                <td>O+, O-</td>
+                                <td><span class="text-warning">Limited compatibility</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">O-</span></td>
+                                <td>O- only</td>
+                                <td><span class="text-danger">Very limited</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Blood type selection handler
+    const bloodTypeSelect = document.getElementById('blood_type');
+    bloodTypeSelect.addEventListener('change', function() {
+        const selectedType = this.value;
+        if (selectedType) {
+            showCompatibilityInfo(selectedType);
+        }
+    });
+    
+    // Urgency level handler
+    const urgencyRadios = document.querySelectorAll('input[name="urgency"]');
+    urgencyRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            updateUrgencyDisplay(this.value);
+        });
+    });
+    
+    // Show compatibility modal button
+    const showCompatibilityBtn = document.createElement('button');
+    showCompatibilityBtn.type = 'button';
+    showCompatibilityBtn.className = 'btn btn-outline-info btn-sm ms-2';
+    showCompatibilityBtn.innerHTML = '<i class="fas fa-info-circle me-1"></i>View Compatibility';
+    showCompatibilityBtn.onclick = function() {
+        const modal = new bootstrap.Modal(document.getElementById('compatibilityModal'));
+        modal.show();
+    };
+    
+    const bloodTypeLabel = document.querySelector('label[for="blood_type"]');
+    if (bloodTypeLabel) {
+        bloodTypeLabel.appendChild(showCompatibilityBtn);
+    }
+});
+
+function showCompatibilityInfo(bloodType) {
+    const compatibility = {
+        'A+': { donors: ['A+', 'A-', 'O+', 'O-'], level: 'Good' },
+        'A-': { donors: ['A-', 'O-'], level: 'Limited' },
+        'B+': { donors: ['B+', 'B-', 'O+', 'O-'], level: 'Good' },
+        'B-': { donors: ['B-', 'O-'], level: 'Limited' },
+        'AB+': { donors: ['All blood types'], level: 'Universal Recipient' },
+        'AB-': { donors: ['A-', 'B-', 'AB-', 'O-'], level: 'Moderate' },
+        'O+': { donors: ['O+', 'O-'], level: 'Limited' },
+        'O-': { donors: ['O-'], level: 'Very Limited' }
+    };
+    
+    const info = compatibility[bloodType];
+    if (info) {
+        const message = `Blood Type ${bloodType}: Can receive from ${info.donors.join(', ')}. Compatibility: ${info.level}`;
+        showNotification(message, 'info');
+    }
+}
+
+function updateUrgencyDisplay(urgency) {
+    const urgencyMessages = {
+        'Low': { message: 'We will find donors within a week', color: 'success' },
+        'Medium': { message: 'Priority search - donors will be contacted within 24 hours', color: 'warning' },
+        'High': { message: 'URGENT: Emergency alert will be sent to all compatible donors immediately', color: 'danger' }
+    };
+    
+    const info = urgencyMessages[urgency];
+    if (info) {
+        showNotification(info.message, info.color);
+    }
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.top = '100px';
+    notification.style.right = '20px';
+    notification.style.zIndex = '9999';
+    notification.style.minWidth = '300px';
+    
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 7000);
+}
+</script>
+{% endblock %}

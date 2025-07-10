@@ -1,0 +1,404 @@
+{% extends "base.html" %}
+
+{% block title %}Register as Donor - BloodConnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-hand-holding-heart me-3"></i>
+                        Become a Life Saver
+                    </h2>
+                    <p class="mb-0 mt-2 opacity-75">Join our community of heroes and help save lives</p>
+                </div>
+                
+                <div class="card-body p-5">
+                    <form method="POST" id="donor-form" novalidate>
+                        <div class="row">
+                            <!-- Personal Information -->
+                            <div class="col-12 mb-4">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-user me-2"></i>Personal Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label fw-semibold">
+                                    <i class="fas fa-user me-1"></i>Full Name / পূর্ণ নাম *
+                                </label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       placeholder="আপনার পূর্ণ নাম লিখুন / Enter your full name" required minlength="2">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label fw-semibold">
+                                    <i class="fas fa-envelope me-1"></i>Email Address *
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="your.email@example.com" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label fw-semibold">
+                                    <i class="fas fa-lock me-1"></i>Password *
+                                </label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Create a secure password" required minlength="6">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Minimum 6 characters required
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label fw-semibold">
+                                    <i class="fas fa-phone me-1"></i>Phone Number / ফোন নম্বর *
+                                </label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       placeholder="+৮৮০ ১৭XX-XXXXXX" required pattern="[+]?[0-9\s\-\(\)]{10,}">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    বাংলাদেশী মোবাইল নম্বর (Bangladeshi mobile number)
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="blood_type" class="form-label fw-semibold">
+                                    <i class="fas fa-tint me-1"></i>Blood Type *
+                                </label>
+                                <select class="form-select" id="blood_type" name="blood_type" required>
+                                    <option value="">Select your blood type</option>
+                                    {% for blood_type in blood_types %}
+                                        <option value="{{ blood_type }}">{{ blood_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <!-- Health Information -->
+                            <div class="col-12 mb-4 mt-3">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-heartbeat me-2"></i>Health Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="age" class="form-label fw-semibold">
+                                    <i class="fas fa-birthday-cake me-1"></i>Age *
+                                </label>
+                                <input type="number" class="form-control" id="age" name="age" 
+                                       placeholder="Your age" required min="18" max="65">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Donors must be between 18-65 years old
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="weight" class="form-label fw-semibold">
+                                    <i class="fas fa-weight me-1"></i>Weight (kg) *
+                                </label>
+                                <input type="number" class="form-control" id="weight" name="weight" 
+                                       placeholder="Your weight in kg" required min="50" max="200">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Minimum weight requirement: 50kg
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <label for="last_donation" class="form-label fw-semibold">
+                                    <i class="fas fa-calendar me-1"></i>Last Donation Date
+                                </label>
+                                <input type="date" class="form-control" id="last_donation" name="last_donation">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Leave blank if you're a first-time donor
+                                </div>
+                            </div>
+                            
+                            <!-- Location Information -->
+                            <div class="col-12 mb-4 mt-3">
+                                <h5 class="text-danger mb-3">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Location Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label fw-semibold">
+                                    <i class="fas fa-city me-1"></i>City / শহর *
+                                </label>
+                                <select class="form-select" id="city" name="city" required>
+                                    <option value="">Select your city / আপনার শহর নির্বাচন করুন</option>
+                                    <option value="ঢাকা (Dhaka)">ঢাকা (Dhaka)</option>
+                                    <option value="চট্টগ্রাম (Chittagong)">চট্টগ্রাম (Chittagong)</option>
+                                    <option value="সিলেট (Sylhet)">সিলেট (Sylhet)</option>
+                                    <option value="রাজশাহী (Rajshahi)">রাজশাহী (Rajshahi)</option>
+                                    <option value="খুলনা (Khulna)">খুলনা (Khulna)</option>
+                                    <option value="বরিশাল (Barisal)">বরিশাল (Barisal)</option>
+                                    <option value="রংপুর (Rangpur)">রংপুর (Rangpur)</option>
+                                    <option value="ময়মনসিংহ (Mymensingh)">ময়মনসিংহ (Mymensingh)</option>
+                                    <option value="কুমিল্লা (Comilla)">কুমিল্লা (Comilla)</option>
+                                    <option value="নারায়ণগঞ্জ (Narayanganj)">নারায়ণগঞ্জ (Narayanganj)</option>
+                                    <option value="গাজীপুর (Gazipur)">গাজীপুর (Gazipur)</option>
+                                    <option value="টাঙ্গাইল (Tangail)">টাঙ্গাইল (Tangail)</option>
+                                    <option value="যশোর (Jessore)">যশোর (Jessore)</option>
+                                    <option value="বগুড়া (Bogra)">বগুড়া (Bogra)</option>
+                                    <option value="পাবনা (Pabna)">পাবনা (Pabna)</option>
+                                    <option value="নাটোর (Natore)">নাটোর (Natore)</option>
+                                    <option value="সাভার (Savar)">সাভার (Savar)</option>
+                                    <option value="কক্সবাজার (Cox's Bazar)">কক্সবাজার (Cox's Bazar)</option>
+                                    <option value="ফরিদপুর (Faridpur)">ফরিদপুর (Faridpur)</option>
+                                    <option value="মাদারীপুর (Madaripur)">মাদারীপুর (Madaripur)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="address" class="form-label fw-semibold">
+                                    <i class="fas fa-home me-1"></i>Address
+                                </label>
+                                <input type="text" class="form-control" id="address" name="address" 
+                                       placeholder="Your address (optional)">
+                            </div>
+                            
+                            <!-- Terms and Conditions -->
+                            <div class="col-12 mt-4">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" class="text-danger">Terms and Conditions</a> 
+                                        and <a href="#" class="text-danger">Privacy Policy</a> *
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="health_confirm" required>
+                                    <label class="form-check-label" for="health_confirm">
+                                        I confirm that I am in good health and eligible to donate blood *
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="contact_consent">
+                                    <label class="form-check-label" for="contact_consent">
+                                        I consent to be contacted for emergency blood requests
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-danger btn-lg px-5 py-3">
+                                    <i class="fas fa-heart me-2"></i>
+                                    Register as Donor
+                                </button>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Your information is secure and will only be used for blood donation purposes
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Information Cards -->
+            <div class="row mt-5">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-heart fa-3x text-danger mb-3"></i>
+                            <h5>Save Lives</h5>
+                            <p class="text-muted small">One donation can save up to 3 lives</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-3x text-success mb-3"></i>
+                            <h5>Join Community</h5>
+                            <p class="text-muted small">Connect with fellow donors and recipients</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-award fa-3x text-warning mb-3"></i>
+                            <h5>Be a Hero</h5>
+                            <p class="text-muted small">Make a difference in your community</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blood Donation Guidelines Modal -->
+<div class="modal fade" id="guidelinesModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Blood Donation Guidelines
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-success">✓ You CAN donate if you:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Are 18-65 years old</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Weigh at least 50kg</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Are in good health</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Haven't donated in last 3 months</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Had adequate sleep (6+ hours)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-danger">✗ You CANNOT donate if you:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-times text-danger me-2"></i>Have cold, flu, or fever</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>Are pregnant or breastfeeding</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>Have certain medical conditions</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>Recently had surgery</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>Are on certain medications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show guidelines modal on page load
+    setTimeout(() => {
+        const modal = new bootstrap.Modal(document.getElementById('guidelinesModal'));
+        modal.show();
+    }, 1000);
+    
+    // Blood type selection handler
+    const bloodTypeSelect = document.getElementById('blood_type');
+    bloodTypeSelect.addEventListener('change', function() {
+        const selectedType = this.value;
+        if (selectedType) {
+            showBloodTypeInfo(selectedType);
+        }
+    });
+    
+    // Age validation
+    const ageInput = document.getElementById('age');
+    ageInput.addEventListener('input', function() {
+        const age = parseInt(this.value);
+        const feedback = this.parentNode.querySelector('.age-feedback');
+        
+        if (feedback) feedback.remove();
+        
+        if (age < 18) {
+            showFieldFeedback(this, 'You must be at least 18 years old to donate blood.', 'danger');
+        } else if (age > 65) {
+            showFieldFeedback(this, 'Donors must be under 65 years old.', 'danger');
+        } else if (age >= 18 && age <= 65) {
+            showFieldFeedback(this, 'Perfect age for blood donation!', 'success');
+        }
+    });
+    
+    // Weight validation
+    const weightInput = document.getElementById('weight');
+    weightInput.addEventListener('input', function() {
+        const weight = parseInt(this.value);
+        const feedback = this.parentNode.querySelector('.weight-feedback');
+        
+        if (feedback) feedback.remove();
+        
+        if (weight < 50) {
+            showFieldFeedback(this, 'Minimum weight requirement is 50kg.', 'danger');
+        } else if (weight >= 50) {
+            showFieldFeedback(this, 'Weight requirement met!', 'success');
+        }
+    });
+    
+    // Last donation date validation
+    const lastDonationInput = document.getElementById('last_donation');
+    lastDonationInput.addEventListener('change', function() {
+        const lastDate = new Date(this.value);
+        const today = new Date();
+        const diffMonths = (today - lastDate) / (1000 * 60 * 60 * 24 * 30);
+        
+        const feedback = this.parentNode.querySelector('.donation-feedback');
+        if (feedback) feedback.remove();
+        
+        if (diffMonths < 3) {
+            showFieldFeedback(this, 'You must wait at least 3 months between donations.', 'warning');
+        } else {
+            showFieldFeedback(this, 'You are eligible to donate!', 'success');
+        }
+    });
+});
+
+function showBloodTypeInfo(bloodType) {
+    const compatibility = {
+        'A+': 'Can donate to A+ and AB+',
+        'A-': 'Can donate to A+, A-, AB+, AB-',
+        'B+': 'Can donate to B+ and AB+',
+        'B-': 'Can donate to B+, B-, AB+, AB-',
+        'AB+': 'Can donate to AB+ only',
+        'AB-': 'Can donate to AB+ and AB-',
+        'O+': 'Can donate to A+, B+, AB+, O+',
+        'O-': 'Universal donor - can donate to all blood types'
+    };
+    
+    const info = compatibility[bloodType];
+    if (info) {
+        showNotification(`Blood Type ${bloodType}: ${info}`, 'info');
+    }
+}
+
+function showFieldFeedback(field, message, type) {
+    const feedbackDiv = document.createElement('div');
+    feedbackDiv.className = `form-text text-${type} ${field.id}-feedback`;
+    feedbackDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : type === 'danger' ? 'times' : 'exclamation-triangle'} me-1"></i>${message}`;
+    
+    field.parentNode.appendChild(feedbackDiv);
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.top = '100px';
+    notification.style.right = '20px';
+    notification.style.zIndex = '9999';
+    notification.style.minWidth = '300px';
+    
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+</script>
+{% endblock %}

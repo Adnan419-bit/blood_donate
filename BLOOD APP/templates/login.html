@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Login - BloodConnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-sign-in-alt me-3"></i>
+                        Welcome Back
+                    </h2>
+                    <p class="mb-0 mt-2 opacity-75">Sign in to your BloodConnect account</p>
+                </div>
+                
+                <div class="card-body p-5">
+                    <form method="POST" id="login-form" novalidate>
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="fas fa-envelope me-1"></i>Email Address
+                            </label>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" 
+                                   placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold">
+                                <i class="fas fa-lock me-1"></i>Password
+                            </label>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" 
+                                   placeholder="Enter your password" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="remember_me">
+                                <label class="form-check-label" for="remember_me">
+                                    Remember me
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Sign In
+                            </button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-muted">
+                                Don't have an account? 
+                                <a href="{{ url_for('register_donor') }}" class="text-danger text-decoration-none">Register as Donor</a> 
+                                or 
+                                <a href="{{ url_for('register_recipient') }}" class="text-danger text-decoration-none">Register as Recipient</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Quick Access Cards -->
+            <div class="row mt-4">
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-hand-holding-heart fa-3x text-danger mb-3"></i>
+                            <h5>New Donor?</h5>
+                            <p class="text-muted small">Join our community of life savers</p>
+                            <a href="{{ url_for('register_donor') }}" class="btn btn-outline-danger btn-sm">
+                                Register as Donor
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-injured fa-3x text-primary mb-3"></i>
+                            <h5>Need Blood?</h5>
+                            <p class="text-muted small">Find donors in your area</p>
+                            <a href="{{ url_for('register_recipient') }}" class="btn btn-outline-primary btn-sm">
+                                Register as Recipient
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('login-form');
+    
+    form.addEventListener('submit', function(e) {
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    });
+    
+    // Show password toggle
+    const passwordInput = document.getElementById('password');
+    const toggleButton = document.createElement('button');
+    toggleButton.type = 'button';
+    toggleButton.className = 'btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-2';
+    toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+    toggleButton.style.border = 'none';
+    toggleButton.style.background = 'transparent';
+    
+    passwordInput.parentNode.style.position = 'relative';
+    passwordInput.parentNode.appendChild(toggleButton);
+    
+    toggleButton.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    });
+});
+</script>
+{% endblock %}

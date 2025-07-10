@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Loading</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #dc3545, #c82333, #a71e2a);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .splash-container {
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 4px solid #ffc107;
+            animation: logoFadeIn 1s ease-out;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: #dc3545;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: #ff5722;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .app-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            animation: slideInUp 1s ease-out 0.5s both;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.8s both;
+            line-height: 1.4;
+        }
+
+        .loading-section {
+            margin-bottom: 3rem;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-text {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-out 2s both;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .progress-container {
+            width: 300px;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            margin: 0 auto;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out 2s both;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffc107, #ffd54f, #fff176);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progressGlow 2s ease-in-out infinite;
+        }
+
+        .developer-info {
+            margin-top: auto;
+            text-align: center;
+            animation: fadeIn 1s ease-out 1.5s both;
+            padding-bottom: 1rem;
+        }
+
+        .developer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .developer-brand i {
+            margin-right: 0.5rem;
+            color: #ffc107;
+        }
+
+        .version-info {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            line-height: 1.2;
+        }
+
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-1 {
+            top: 10%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-2 {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-3 {
+            top: 50%;
+            left: 5%;
+            animation-delay: 4s;
+        }
+
+        /* Animations */
+        @keyframes logoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes progressGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.8); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-name {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo i {
+                font-size: 2.5rem;
+            }
+            
+            .progress-container {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements -->
+    <div class="floating-element floating-1">
+        <i class="fas fa-heart fa-3x"></i>
+    </div>
+    <div class="floating-element floating-2">
+        <i class="fas fa-plus fa-2x"></i>
+    </div>
+    <div class="floating-element floating-3">
+        <i class="fas fa-tint fa-2x"></i>
+    </div>
+
+    <div class="splash-container">
+        <div class="main-content">
+            <!-- Logo Section -->
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="pulse-ring"></div>
+            </div>
+
+            <!-- App Info -->
+            <h1 class="app-name">BloodConnect</h1>
+            <p class="tagline">Save Lives Together<br>Every Drop Counts</p>
+
+            <!-- Loading Section -->
+            <div class="loading-section">
+                <div class="loading-text" id="loadingText">Initializing BloodConnect...</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer Info -->
+        <div class="developer-info">
+            <div class="developer-brand">
+                <i class="fas fa-code"></i>
+                <span><strong>Developed by SECDET</strong></span>
+            </div>
+            <div class="version-info">Version 1.0.0 • Security & Development Team</div>
+        </div>
+    </div>
+
+    <script>
+        // Loading sequence
+        const loadingTexts = [
+            "Initializing BloodConnect...",
+            "Connecting to network...",
+            "Loading donor database...",
+            "Preparing life-saving platform...",
+            "Ready to save lives!"
+        ];
+
+        let currentTextIndex = 0;
+        let progress = 0;
+        const progressBar = document.getElementById('progressBar');
+        const loadingText = document.getElementById('loadingText');
+
+        function updateProgress() {
+            progress += Math.random() * 15 + 5;
+            
+            if (progress > 100) {
+                progress = 100;
+            }
+            
+            progressBar.style.width = progress + '%';
+            
+            // Update loading text based on progress
+            const textIndex = Math.floor((progress / 100) * (loadingTexts.length - 1));
+            if (textIndex !== currentTextIndex && textIndex < loadingTexts.length) {
+                currentTextIndex = textIndex;
+                loadingText.textContent = loadingTexts[textIndex];
+            }
+            
+            if (progress >= 100) {
+                setTimeout(() => {
+                    // Redirect to main page
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                setTimeout(updateProgress, 200 + Math.random() * 300);
+            }
+        }
+
+        // Start loading after 2 seconds
+        setTimeout(() => {
+            updateProgress();
+        }, 2000);
+
+        // Prevent back button
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+    </script>
+</body>
+</html>

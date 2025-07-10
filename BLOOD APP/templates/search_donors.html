@@ -1,0 +1,488 @@
+{% extends "base.html" %}
+
+{% block title %}Find Blood Donors - BloodConnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Search Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold text-danger mb-3">
+                <i class="fas fa-search me-3"></i>Find Blood Donors
+            </h1>
+            <p class="lead text-muted">Search for compatible blood donors in your area</p>
+        </div>
+    </div>
+    
+    <!-- Search Form -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient text-white text-center py-3">
+                    <h4 class="mb-0">
+                        <i class="fas fa-filter me-2"></i>Search Filters
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" id="search-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="blood_type" class="form-label fw-semibold">
+                                    <i class="fas fa-tint me-1 text-danger"></i>Required Blood Type *
+                                </label>
+                                <select class="form-select form-select-lg" id="blood_type" name="blood_type" required>
+                                    <option value="">Select blood type needed</option>
+                                    {% for blood_type in blood_types %}
+                                        <option value="{{ blood_type }}" 
+                                                {% if request.form.blood_type == blood_type %}selected{% endif %}>
+                                            {{ blood_type }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label fw-semibold">
+                                    <i class="fas fa-map-marker-alt me-1 text-primary"></i>City / শহর *
+                                </label>
+                                <select class="form-select form-select-lg" id="city" name="city" required>
+                                    <option value="">Select city / শহর নির্বাচন করুন</option>
+                                    <option value="ঢাকা (Dhaka)" {{ 'selected' if request.form.city == 'ঢাকা (Dhaka)' else '' }}>ঢাকা (Dhaka)</option>
+                                    <option value="চট্টগ্রাম (Chittagong)" {{ 'selected' if request.form.city == 'চট্টগ্রাম (Chittagong)' else '' }}>চট্টগ্রাম (Chittagong)</option>
+                                    <option value="সিলেট (Sylhet)" {{ 'selected' if request.form.city == 'সিলেট (Sylhet)' else '' }}>সিলেট (Sylhet)</option>
+                                    <option value="রাজশাহী (Rajshahi)" {{ 'selected' if request.form.city == 'রাজশাহী (Rajshahi)' else '' }}>রাজশাহী (Rajshahi)</option>
+                                    <option value="খুলনা (Khulna)" {{ 'selected' if request.form.city == 'খুলনা (Khulna)' else '' }}>খুলনা (Khulna)</option>
+                                    <option value="বরিশাল (Barisal)" {{ 'selected' if request.form.city == 'বরিশাল (Barisal)' else '' }}>বরিশাল (Barisal)</option>
+                                    <option value="রংপুর (Rangpur)" {{ 'selected' if request.form.city == 'রংপুর (Rangpur)' else '' }}>রংপুর (Rangpur)</option>
+                                    <option value="ময়মনসিংহ (Mymensingh)" {{ 'selected' if request.form.city == 'ময়মনসিংহ (Mymensingh)' else '' }}>ময়মনসিংহ (Mymensingh)</option>
+                                    <option value="কুমিল্লা (Comilla)" {{ 'selected' if request.form.city == 'কুমিল্লা (Comilla)' else '' }}>কুমিল্লা (Comilla)</option>
+                                    <option value="নারায়ণগঞ্জ (Narayanganj)" {{ 'selected' if request.form.city == 'নারায়ণগঞ্জ (Narayanganj)' else '' }}>নারায়ণগঞ্জ (Narayanganj)</option>
+                                    <option value="গাজীপুর (Gazipur)" {{ 'selected' if request.form.city == 'গাজীপুর (Gazipur)' else '' }}>গাজীপুর (Gazipur)</option>
+                                    <option value="টাঙ্গাইল (Tangail)" {{ 'selected' if request.form.city == 'টাঙ্গাইল (Tangail)' else '' }}>টাঙ্গাইল (Tangail)</option>
+                                    <option value="যশোর (Jessore)" {{ 'selected' if request.form.city == 'যশোর (Jessore)' else '' }}>যশোর (Jessore)</option>
+                                    <option value="বগুড়া (Bogra)" {{ 'selected' if request.form.city == 'বগুড়া (Bogra)' else '' }}>বগুড়া (Bogra)</option>
+                                    <option value="পাবনা (Pabna)" {{ 'selected' if request.form.city == 'পাবনা (Pabna)' else '' }}>পাবনা (Pabna)</option>
+                                    <option value="নাটোর (Natore)" {{ 'selected' if request.form.city == 'নাটোর (Natore)' else '' }}>নাটোর (Natore)</option>
+                                    <option value="সাভার (Savar)" {{ 'selected' if request.form.city == 'সাভার (Savar)' else '' }}>সাভার (Savar)</option>
+                                    <option value="কক্সবাজার (Cox's Bazar)" {{ 'selected' if request.form.city == "কক্সবাজার (Cox's Bazar)" else '' }}>কক্সবাজার (Cox's Bazar)</option>
+                                    <option value="ফরিদপুর (Faridpur)" {{ 'selected' if request.form.city == 'ফরিদপুর (Faridpur)' else '' }}>ফরিদপুর (Faridpur)</option>
+                                    <option value="মাদারীপুর (Madaripur)" {{ 'selected' if request.form.city == 'মাদারীপুর (Madaripur)' else '' }}>মাদারীপুর (Madaripur)</option>
+                            
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-danger btn-lg px-5 py-3 me-3">
+                                    <i class="fas fa-search me-2"></i>Search Donors
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-lg px-4 py-3" onclick="findNearbyDonors()">
+                                    <i class="fas fa-location-arrow me-2"></i>Use My Location
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Results -->
+    {% if donors %}
+    <div class="search-results">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="text-success mb-0">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Found {{ donors|length }} Compatible Donor{{ 's' if donors|length != 1 else '' }}
+                    </h3>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary" onclick="sortDonors('name')">
+                            <i class="fas fa-sort-alpha-down me-1"></i>Sort by Name
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="sortDonors('date')">
+                            <i class="fas fa-sort-numeric-down me-1"></i>Sort by Date
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" id="donors-container">
+            {% for donor in donors %}
+            <div class="col-lg-6 mb-4 donor-item" data-donor-id="{{ donor.id }}">
+                <div class="donor-card card h-100 border-0 shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1 text-white">
+                                <i class="fas fa-user me-2"></i>{{ donor.name }}
+                            </h5>
+                            <small class="opacity-75">Registered: {{ donor.registered_date }}</small>
+                        </div>
+                        <div class="blood-type-badge">
+                            {{ donor.blood_type }}
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-birthday-cake text-primary me-2"></i>
+                                    <strong>Age:</strong> {{ donor.age }} years
+                                </div>
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-weight text-success me-2"></i>
+                                    <strong>Weight:</strong> {{ donor.weight }} kg
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                    <strong>City:</strong> {{ donor.city }}
+                                </div>
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-calendar text-warning me-2"></i>
+                                    <strong>Last Donation:</strong> 
+                                    {{ donor.last_donation if donor.last_donation else 'First time' }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if donor.address %}
+                        <div class="info-item mb-3">
+                            <i class="fas fa-home text-info me-2"></i>
+                            <strong>Address:</strong> {{ donor.address }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="availability-status mb-3">
+                            {% if donor.available %}
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-check-circle me-1"></i>Available for Donation
+                                </span>
+                            {% else %}
+                                <span class="badge bg-warning fs-6">
+                                    <i class="fas fa-clock me-1"></i>Recently Donated
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="contact-info">
+                                <small class="text-muted">Contact Information:</small><br>
+                                <a href="tel:{{ donor.phone }}" class="btn btn-outline-success btn-sm me-2">
+                                    <i class="fas fa-phone me-1"></i>{{ donor.phone }}
+                                </a>
+                                <a href="mailto:{{ donor.email }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-envelope me-1"></i>Email
+                                </a>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-danger btn-sm" onclick="contactDonor('{{ donor.id }}', '{{ donor.name }}')">
+                                    <i class="fas fa-heart me-1"></i>Request Donation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination (if needed) -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <nav aria-label="Donors pagination">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    {% elif request.method == 'POST' %}
+    <!-- No Results Found -->
+    <div class="no-results">
+        <div class="text-center">
+            <i class="fas fa-search text-muted"></i>
+            <h3 class="text-muted mt-3">No Donors Found</h3>
+            <p class="text-muted">
+                We couldn't find any compatible donors in <strong>{{ request.form.city }}</strong> 
+                for blood type <strong>{{ request.form.blood_type }}</strong>.
+            </p>
+            <div class="mt-4">
+                <a href="{{ url_for('emergency') }}" class="btn btn-warning btn-lg me-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Create Emergency Request
+                </a>
+                <button class="btn btn-outline-primary btn-lg" onclick="expandSearch()">
+                    <i class="fas fa-expand-arrows-alt me-2"></i>Expand Search Area
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Quick Tips -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-light border-0">
+                <div class="card-body">
+                    <h5 class="text-danger mb-3">
+                        <i class="fas fa-lightbulb me-2"></i>Search Tips
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="tip-item mb-3">
+                                <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                <strong>Location:</strong> Try nearby cities if no donors found in your area
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tip-item mb-3">
+                                <i class="fas fa-clock text-warning me-2"></i>
+                                <strong>Timing:</strong> Contact donors during appropriate hours (9 AM - 9 PM)
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tip-item mb-3">
+                                <i class="fas fa-heart text-danger me-2"></i>
+                                <strong>Courtesy:</strong> Be polite and explain your urgent need clearly
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Donor Modal -->
+<div class="modal fade" id="contactDonorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-heart me-2"></i>Contact Donor
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-circle fa-4x text-muted mb-3"></i>
+                    <h4 id="donor-name">Donor Name</h4>
+                </div>
+                
+                <div class="contact-options">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success btn-lg" id="call-donor">
+                            <i class="fas fa-phone me-2"></i>Call Now
+                        </button>
+                        <button class="btn btn-primary btn-lg" id="email-donor">
+                            <i class="fas fa-envelope me-2"></i>Send Email
+                        </button>
+                        <button class="btn btn-info btn-lg" id="whatsapp-donor">
+                            <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-3 bg-light rounded">
+                    <h6 class="text-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Important Guidelines:
+                    </h6>
+                    <ul class="small mb-0">
+                        <li>Be respectful and polite when contacting donors</li>
+                        <li>Clearly explain your urgent need and location</li>
+                        <li>Provide hospital details and contact information</li>
+                        <li>Thank the donor regardless of their response</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentDonors = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Store current donors for sorting
+    const donorElements = document.querySelectorAll('.donor-item');
+    donorElements.forEach(element => {
+        const donorData = {
+            id: element.dataset.donorId,
+            element: element,
+            name: element.querySelector('.card-header h5').textContent.trim(),
+            date: element.querySelector('.card-header small').textContent
+        };
+        currentDonors.push(donorData);
+    });
+});
+
+function sortDonors(criteria) {
+    const container = document.getElementById('donors-container');
+    if (!container) return;
+    
+    let sortedDonors;
+    
+    if (criteria === 'name') {
+        sortedDonors = currentDonors.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (criteria === 'date') {
+        sortedDonors = currentDonors.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+    
+    // Clear container and re-append sorted elements
+    container.innerHTML = '';
+    sortedDonors.forEach(donor => {
+        container.appendChild(donor.element);
+    });
+    
+    // Add animation
+    container.style.opacity = '0.5';
+    setTimeout(() => {
+        container.style.opacity = '1';
+    }, 200);
+}
+
+function contactDonor(donorId, donorName) {
+    const modal = new bootstrap.Modal(document.getElementById('contactDonorModal'));
+    document.getElementById('donor-name').textContent = donorName;
+    
+    // Find donor data
+    const donorCard = document.querySelector(`[data-donor-id="${donorId}"]`);
+    const phone = donorCard.querySelector('a[href^="tel:"]').textContent.trim();
+    const email = donorCard.querySelector('a[href^="mailto:"]').href.replace('mailto:', '');
+    
+    // Set up contact buttons
+    document.getElementById('call-donor').onclick = () => window.location.href = `tel:${phone}`;
+    document.getElementById('email-donor').onclick = () => window.location.href = `mailto:${email}?subject=Urgent Blood Donation Request&body=Dear ${donorName},%0A%0AI hope this message finds you well. I am reaching out regarding an urgent blood donation request.%0A%0APlease let me know if you are available to help.%0A%0AThank you for your time and consideration.`;
+    document.getElementById('whatsapp-donor').onclick = () => window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=Hello ${donorName}, I need urgent blood donation. Can you help?`, '_blank');
+    
+    modal.show();
+}
+
+function expandSearch() {
+    const cityInput = document.getElementById('city');
+    const currentCity = cityInput.value;
+    
+    // Suggest nearby cities (this would be enhanced with real geolocation data)
+    const suggestions = [
+        'Dhaka', 'Chittagong', 'Sylhet', 'Rajshahi', 'Khulna', 
+        'Barisal', 'Rangpur', 'Mymensingh', 'Comilla', 'Gazipur'
+    ];
+    
+    const nearbyCities = suggestions.filter(city => 
+        city.toLowerCase() !== currentCity.toLowerCase()
+    ).slice(0, 3);
+    
+    if (nearbyCities.length > 0) {
+        const message = `Try searching in nearby cities: ${nearbyCities.join(', ')}`;
+        showNotification(message, 'info');
+    }
+}
+
+function findNearbyDonors() {
+    if (navigator.geolocation) {
+        showNotification('Getting your location...', 'info');
+        
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            // In a real app, you would reverse geocode to get city name
+            // For demo, we'll simulate this
+            const simulatedCities = ['Dhaka', 'Chittagong', 'Sylhet', 'Rajshahi'];
+            const randomCity = simulatedCities[Math.floor(Math.random() * simulatedCities.length)];
+            
+            document.getElementById('city').value = randomCity;
+            showNotification(`Location detected: ${randomCity}`, 'success');
+            
+        }, function(error) {
+            showNotification('Location access denied. Please enter your city manually.', 'warning');
+        });
+    } else {
+        showNotification('Geolocation is not supported by this browser.', 'warning');
+    }
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.top = '100px';
+    notification.style.right = '20px';
+    notification.style.zIndex = '9999';
+    notification.style.minWidth = '300px';
+    
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+// Filter donors by availability
+function filterByAvailability(available) {
+    const donorItems = document.querySelectorAll('.donor-item');
+    
+    donorItems.forEach(item => {
+        const availabilityBadge = item.querySelector('.availability-status .badge');
+        const isAvailable = availabilityBadge.classList.contains('bg-success');
+        
+        if (available === 'all' || (available === 'available' && isAvailable) || (available === 'recent' && !isAvailable)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// Add filter buttons dynamically
+document.addEventListener('DOMContentLoaded', function() {
+    const searchResults = document.querySelector('.search-results');
+    if (searchResults) {
+        const filterButtons = document.createElement('div');
+        filterButtons.className = 'mb-3 text-center';
+        filterButtons.innerHTML = `
+            <div class="btn-group" role="group" aria-label="Availability filter">
+                <button type="button" class="btn btn-outline-secondary active" onclick="filterByAvailability('all')">
+                    All Donors
+                </button>
+                <button type="button" class="btn btn-outline-success" onclick="filterByAvailability('available')">
+                    Available Now
+                </button>
+                <button type="button" class="btn btn-outline-warning" onclick="filterByAvailability('recent')">
+                    Recently Donated
+                </button>
+            </div>
+        `;
+        
+        const donorsContainer = document.getElementById('donors-container');
+        donorsContainer.parentNode.insertBefore(filterButtons, donorsContainer);
+    }
+});
+</script>
+{% endblock %}
